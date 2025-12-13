@@ -1,0 +1,93 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 2
+
+# Pascal files
+[*.pas]
+indent_style = space
+indent_size = 2
+
+# Markdown files
+[*.md]
+trim_trailing_whitespace = false
+
+# Project files
+[*.lpi]
+indent_style = tab
+
+# Project options
+[*.lps]
+indent_style = tab
+
+# Form files
+[*.lfm]
+indent_style = space
+indent_size = 2
+
+# Project files
+[*.lpr]
+indent_style = space
+indent_size = 2
+
+# Shell scripts
+[*.sh]
+indent_style = tab
+
+# Batch files
+[*.bat]
+indent_style = tab
+
+# YAML files
+[*.y*ml]
+indent_style = space
+indent_size = 2
+
+# JSON files
+[*.json]
+indent_style = space
+indent_size = 2
+
+# XML files
+[*.xml]
+indent_style = space
+indent_size = 2
+
+# CSS/SCSS files
+[*.{css,scss}]
+indent_style = space
+indent_size = 2
+
+# JavaScript/TypeScript files
+[*.{js,ts,jsx,tsx}]
+indent_style = space
+indent_size = 2
+
+# HTML files
+[*.{htm,html}]
+indent_style = space
+indent_size = 2
+
+# Configuration files
+[*.{ini,cfg}]
+indent_style = space
+indent_size = 4
+
+# Git ignore
+[.gitignore]
+indent_style = space
+indent_size = 2
+
+# Editor specific settings
+[.idea/*]
+indent_style = space
+indent_size = 2
