@@ -15,7 +15,7 @@ Thank you for your interest in contributing to SimpleJSON-FP! We want to make co
 1. Fork the repository
 2. Clone your fork:
    ```bash
-   git clone https://github.com/ikelaiah/simplejson-fp.git
+   git clone https://github.com/your-username/simplejson-fp.git
    ```
 3. Create a new branch:
    ```bash
