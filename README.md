@@ -20,11 +20,11 @@ Working with JSON in Pascal has never been easier. SimpleJSON-FP provides a clea
 ```pascal
 // JSON has never been easier
 var
-  Json: IJSONValue;
+  Json: IJSONObject;
   Person: IJSONObject;
 begin
   // Parse JSON with ease
-  Json := TJSON.Parse('{"name":"Pascal","age":50}');
+  Json := TJSON.Parse('{"name":"Pascal","age":50}').AsObject;
   WriteLn('Name: ', Json['name'].AsString);
 
   // Build JSON programmatically
