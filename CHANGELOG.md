@@ -56,14 +56,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `Test40_FuzzBasic`: Basic fuzz testing ensures parser doesn't crash on malformed inputs
   - `Test41_SingleZeroNumber`: Asserts the scanner handles a single '0' token correctly
 
-### Fixed
+### Fixed (Additional)
 
-- **Locale-safe number formatting**: `TJSONNumber.ToString` now uses `TFormatSettings` with explicit decimal separator to ensure correct output regardless of system locale
-- **Property name escaping**: `TJSONWriter` now properly escapes special characters (`"`, `\`, control chars) in JSON object property names
-- **Code cleanup**: Removed unused variables in `SimpleJSON.Scanner` and unused `TypInfo` unit in `SimpleJSON.pas`
 - **Number scanning bug**: Fixed an edge-case in `SimpleJSON.Scanner.ReadNumber` where a single leading `0` was not counted toward digits, causing `Number must contain at least one digit` errors; added improved diagnostics with position info
-
-### Features
 
 ### Features
 
