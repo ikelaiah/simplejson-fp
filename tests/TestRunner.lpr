@@ -5,7 +5,8 @@ program TestRunner;
 uses
   Classes
   , consoletestrunner
-  , SimpleJSON.Test;
+  , SimpleJSON.Test
+  , System.JSON.Test;  // Delphi System.JSON compatibility tests
 
 type
 
