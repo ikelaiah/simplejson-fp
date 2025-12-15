@@ -6,7 +6,7 @@
 [![Documentation](https://img.shields.io/badge/Docs-Available-brightgreen.svg)](docs/)
 [![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)](tests/)
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)]()
-[![Version](https://img.shields.io/badge/Version-1.0.0-blueviolet.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.1.0-blueviolet.svg)]()
 
 **A lightweight, user-friendly JSON library for Free Pascal with automatic reference counting.**
 
