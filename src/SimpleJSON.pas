@@ -84,7 +84,6 @@ type
 // Equivalent to 'extract' semantics: returns the value (reference-counted)
 // and removes the key from the object. Useful when you want to take ownership
 // of the value for further use without keeping it in the object.
-function ExtractValue(Obj: IJSONObject; const Name: string): IJSONValue;
   // JSON object interface 
   IJSONObject = interface(IJSONValue)
     ['{B2C7F915-0D47-4A8E-B652-D0F9E4D23179}']
@@ -173,6 +172,12 @@ function ExtractValue(Obj: IJSONObject; const Name: string): IJSONValue;
     class function Compact(const JSON: string): string; static;
   end;
 
+// Convenience helper: extract a value from an object while removing the key.
+// Equivalent to 'extract' semantics: returns the value (reference-counted)
+// and removes the key from the object. Useful when you want to take ownership
+// of the value for further use without keeping it in the object.
+function ExtractValue(Obj: IJSONObject; const Name: string): IJSONValue;
+
 implementation
 
 uses
@@ -235,8 +240,6 @@ begin
   Result := SimpleJSON.Factory.TJSON.Compact(JSON);
 end;
 
-end. 
-
 function ExtractValue(Obj: IJSONObject; const Name: string): IJSONValue;
 begin
   if Obj = nil then
@@ -244,3 +247,5 @@ begin
   Result := Obj.GetValue(Name);
   Obj.Remove(Name);
 end;
+
+end.
