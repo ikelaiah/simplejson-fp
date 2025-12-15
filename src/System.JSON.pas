@@ -178,6 +178,11 @@ type
     function AddPair(const Str: TJSONString; const AValue: TJSONValue): TJSONObject; overload;
     
     // Removing pairs
+    // Removes and returns the TJSONPair with name PairName.
+    // NOTE: Ownership semantics -- the returned TJSONPair is not freed by the
+    // TObjectList that holds the pairs. The caller is responsible for freeing
+    // the returned TJSONPair (and, transitively, its JsonValue if desired).
+    // If the pair is not found, the function returns nil.
     function RemovePair(const PairName: string): TJSONPair;
     
     // Getting values
@@ -1206,6 +1211,11 @@ begin
   Result := AddPair(TJSONPair.Create(Str, AValue));
 end;
 
+// Note: RemovePair removes the pair from the internal list and returns it to
+// the caller. The internal list temporarily disables ownership so the caller
+// receives the pair object; the caller is responsible for freeing the
+// returned TJSONPair (and its JsonValue if necessary). If the pair is not
+// found, the function returns nil.
 function TJSONObject.RemovePair(const PairName: string): TJSONPair;
 var
   I: Integer;

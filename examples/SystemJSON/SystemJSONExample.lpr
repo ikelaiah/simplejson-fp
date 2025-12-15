@@ -1,6 +1,6 @@
 program SystemJSONExample;
 
-{$mode objfpc}{$H+}
+{$mode objfpc}{$H+}{$J-}
 
 (* System.JSON Compatibility Example
    
@@ -14,8 +14,8 @@ program SystemJSONExample;
    Or open in Lazarus IDE and build. *)
 
 uses
-  SysUtils, System.JSON;
 
+  SysUtils, StrUtils, System.JSON;
 procedure DemoParseJSON;
 var
   Obj: TJSONObject;
@@ -186,6 +186,151 @@ begin
   WriteLn;
 end;
 
+procedure DemoFindTryGetRemove;
+var
+  Obj: TJSONObject;
+  Pair: TJSONPair;
+  Removed: TJSONPair;
+  S: string;
+  N: Integer;
+  Found: Boolean;
+begin
+  WriteLn('=== Find / TryGetValue / RemovePair ===');
+  WriteLn;
+
+  Obj := TJSONObject.ParseJSONValue('{"x":"y","n":10,"b":2}') as TJSONObject;
+  try
+    // FindValue via pair lookup
+    Pair := Obj.Get('x');
+    if Pair <> nil then
+      WriteLn('Find "x": ', Pair.JsonValue.ToJSON)
+    else
+      WriteLn('Find "x": not found');
+
+    // TryGetValue (string -> convert)
+    S := Obj.GetValueString('n', '');
+    Found := False;
+    if S <> '' then
+      Found := TryStrToInt(S, N);
+    if Found then
+      WriteLn('TryGetValue "n": ', N)
+    else
+      WriteLn('TryGetValue "n": not found or not an integer');
+
+    // RemovePair - it returns the removed TJSONPair which must be freed
+    Removed := Obj.RemovePair('b');
+    if Assigned(Removed) then
+      Removed.Free;
+    WriteLn('After RemovePair("b"): ', Obj.ToJSON);
+  finally
+    Obj.Free;
+  end;
+
+  WriteLn;
+end;
+
+procedure DemoPathAccess;
+var
+  Root, Curr: TJSONObject;
+  Pair: TJSONPair;
+  Path, Segment: string;
+  P, Start: Integer;
+  Last: Boolean;
+begin
+  WriteLn('=== Path-based access ===');
+  WriteLn;
+
+  Root := TJSONObject.Create;
+  try
+    Root.AddPair('user', TJSONObject.Create);
+    (Root.Get('user').JsonValue as TJSONObject).AddPair('address', TJSONObject.Create);
+    ((Root.Get('user').JsonValue as TJSONObject).Get('address').JsonValue as TJSONObject).AddPair('city', 'Gotham');
+
+    // simple dot-path evaluator
+    Path := 'user.address.city';
+    Curr := Root;
+    Start := 1;
+    Last := False;
+    while Start <= Length(Path) do
+    begin
+      P := PosEx('.', Path, Start);
+      if P = 0 then
+      begin
+        Segment := Copy(Path, Start, MaxInt);
+        Last := True;
+      end
+      else
+      begin
+        Segment := Copy(Path, Start, P - Start);
+      end;
+
+      Pair := Curr.Get(Segment);
+      if (Pair = nil) then
+      begin
+        WriteLn('Path not found: ', Segment);
+        Break;
+      end;
+
+      if Last then
+      begin
+        WriteLn('Path ', Path, ' => ', Pair.JsonValue.ToJSON);
+        Break;
+      end
+      else if Pair.JsonValue is TJSONObject then
+        Curr := Pair.JsonValue as TJSONObject
+      else
+      begin
+        WriteLn('Path stops early at: ', Segment);
+        Break;
+      end;
+
+      Start := P + 1;
+    end;
+  finally
+    Root.Free;
+  end;
+
+  WriteLn;
+end;
+
+procedure DemoTypeCheckingAndTypes;
+var
+  Obj: TJSONObject;
+  Val: TJSONValue;
+  N: TJSONNumber;
+  B: TJSONBool;
+  S: TJSONString;
+begin
+  WriteLn('=== Type checking and direct JSON types ===');
+  WriteLn;
+
+  // Direct types
+  N := TJSONNumber.Create(3.14);
+  B := TJSONBool.Create(True);
+  S := TJSONString.Create('hello');
+  try
+    WriteLn('Number: ', N.ToJSON);
+    WriteLn('Bool:   ', B.ToJSON);
+    WriteLn('String: ', S.ToJSON);
+  finally
+    N.Free; B.Free; S.Free;
+  end;
+
+  // Type checking on parsed values
+  Obj := TJSONObject.ParseJSONValue('{"a": {"b": 1}}') as TJSONObject;
+  try
+    Val := Obj.Get('a').JsonValue;
+    if Val is TJSONObject then
+      WriteLn('Val is a TJSONObject')
+    else
+      WriteLn('Val is not a TJSONObject');
+  finally
+    Obj.Free;
+  end;
+
+  WriteLn;
+end;
+
 procedure DemoCloning;
 var
   Original, Clone: TJSONObject;
@@ -290,6 +435,9 @@ begin
   DemoJSONArray;
   DemoNestedJSON;
   DemoJSONPairs;
+  DemoFindTryGetRemove;
+  DemoPathAccess;
+  DemoTypeCheckingAndTypes;
   DemoCloning;
   DemoErrorHandling;
   DemoDelphiPorting;
