@@ -6,7 +6,7 @@
 [![Documentation](https://img.shields.io/badge/Docs-Available-brightgreen.svg)](docs/)
 [![Tests](https://img.shields.io/badge/Tests-Passing-brightgreen.svg)](tests/)
 [![Status](https://img.shields.io/badge/Status-Development-yellow.svg)]()
-[![Version](https://img.shields.io/badge/Version-1.0.0-blueviolet.svg)]()
+[![Version](https://img.shields.io/badge/Version-1.1.0-blueviolet.svg)]()
 
 **A lightweight, user-friendly JSON library for Free Pascal with automatic reference counting.**
 
@@ -98,6 +98,11 @@ end;
   - Support for all JSON data types (objects, arrays, strings, numbers, booleans, null)
   - Pretty printing and compact output options
   - Full Unicode support with proper escape sequence handling
+- 🔄 **Delphi System.JSON Compatibility**: Easy migration from Delphi
+  - Drop-in replacement for Delphi's `System.JSON` unit
+  - Same class names: `TJSONObject`, `TJSONArray`, `TJSONValue`, etc.
+  - Same methods: `ParseJSONValue`, `AddPair`, `GetValue`, `ToJSON`, etc.
+  - Port your Delphi code to Lazarus with minimal changes
 - Improved scanner validation and diagnostics for number parsing errors (including positional information)
   - Error handling with descriptive messages
   - Easy-to-use factory methods
@@ -137,9 +142,43 @@ git clone https://github.com/ikelaiah/simplejson-fp
 
 ```pascal
 uses
-  // JSON functionality
-  SimpleJSON;              // All JSON functionality
+  // Option 1: SimpleJSON (interface-based, automatic memory management)
+  SimpleJSON;              // All JSON functionality with ARC
+  
+  // Option 2: System.JSON (Delphi-compatible, class-based)
+  System.JSON;             // Delphi System.JSON compatible API
 ```
+
+### Using SimpleJSON (Recommended for new projects)
+
+```pascal
+var
+  Json: IJSONObject;
+begin
+  Json := TJSON.Parse('{"name":"John"}').AsObject;
+  WriteLn(Json['name'].AsString);
+  // No need to free - automatic memory management!
+end;
+```
+
+### Using System.JSON (For Delphi code migration - zero code changes!)
+
+```pascal
+var
+  Obj: TJSONObject;
+begin
+  Obj := TJSONObject.ParseJSONValue('{"name":"John"}') as TJSONObject;
+  try
+    WriteLn(Obj.GetValueString('name'));
+  finally
+    Obj.Free;  // Manual free required, just like Delphi
+  end;
+end;
+```
+
+> **💡 Tip:** SimpleJSON's automatic memory management is safer and cleaner. Use System.JSON only when porting existing Delphi code.
+
+See [System.JSON Compatibility Guide](docs/System.JSON-Compatibility.md) for detailed migration instructions.
 
 ## 🚀 Quick Start
 

@@ -5,11 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2025-12-13
+-## [1.1.0] - 2025-12-16
+
+### Added
+
+- **System.JSON compatibility layer & examples**: Added `examples/SystemJSON` demonstrating a Delphi `System.JSON`-compatible API and migration patterns to ease porting Delphi code to Lazarus/FPC.
+- **`ExtractValue` helper**: New convenience function `ExtractValue(Obj: IJSONObject; const Name: string): IJSONValue` to extract (take-and-remove) values from interface-based objects without manual freeing.
+- **New example demos**: Added Find/TryGet/Remove, path-based access, type-checking, direct JSON types, and cloning demos to the System.JSON example.
 
 ### Changed
 
-- **Initial release of SimpleJSON-FP** - Extracted JSON functionality from [TidyKit-FP](https://github.com/ikelaiah/tidykit-fp)
+- **Documentation**: Updated `docs/cheat-sheet.md` and `docs/SimpleJSON.md` to document `ExtractValue` and clarify remove/extract semantics for interface- vs object-based APIs.
+
+### Fixed
+
+- **RemovePair ownership clarification & leak fix**: Clarified ownership semantics for `TJSONObject.RemovePair` in `src/System.JSON.pas` (caller must free returned `TJSONPair`), and fixed demo code to free removed pairs to avoid leaks.
+
+### Added (tests)
+
+- `Test42_ExtractValue`: Unit test validating `ExtractValue` behavior (returns value and removes key; returns nil for missing keys).
+
+
+## [1.0.0] - 2025-12-13
 - Focused library containing only JSON operations from the original TidyKit library
 - **Breaking change**: Renamed namespace from `TidyKit.JSON` to `SimpleJSON` for a fresh start
 - Updated all documentation to reflect SimpleJSON-FP branding

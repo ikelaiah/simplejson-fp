@@ -45,6 +45,9 @@ Exists := Obj.Contains('key')
 Obj.Remove('key')           // Remove key
 Count := Obj.Count          // Number of items
 Keys := Obj.Names           // Get keys in order
+
+// Extract (convenience)
+Val := ExtractValue(Obj, 'key')  // Gets value and removes key; returns IJSONValue
 ```
 
 ### Arrays

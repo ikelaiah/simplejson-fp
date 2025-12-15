@@ -9,7 +9,7 @@ interface
 
 uses
   SimpleJSON.Factory, SimpleJSON.Parser, SimpleJSON, SimpleJSON.Scanner, 
-  SimpleJSON.Types, SimpleJSON.Writer;
+  SimpleJSON.Types, SimpleJSON.Writer, System.JSON;
 
 implementation
 

@@ -236,10 +236,28 @@ IJSONObject = interface(IJSONValue)
   
   procedure Remove(const Name: string);
   function Contains(const Name: string): Boolean;
-  
   property Values[const Name: string]: IJSONValue read GetValue write SetValue; default;
   property Count: Integer read GetCount;
   property Names: TStringArray read GetNames;  // Returns keys in insertion order
+end;
+```
+
+#### ExtractValue (convenience)
+
+`ExtractValue(Obj: IJSONObject; const Name: string): IJSONValue` is a small helper that
+returns the value associated with `Name` and removes the key from `Obj`.
+Because values are returned as `IJSONValue` (interfaces), no manual freeing is
+required — the returned reference keeps the value alive.
+
+Example:
+
+```pascal
+var
+  Val: IJSONValue;
+begin
+  Val := ExtractValue(Obj, 'key'); // Obj no longer contains 'key'
+  if Assigned(Val) then
+    WriteLn(Val.AsString);
 end;
 ```
 
