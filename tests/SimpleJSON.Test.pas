@@ -56,6 +56,7 @@ type
     procedure Test39_BigExponents;
     procedure Test40_FuzzBasic;
     procedure Test41_SingleZeroNumber;
+    procedure Test42_ExtractValue;
   end;
 
 implementation
@@ -1384,6 +1385,26 @@ begin
   // TryParse should accept zero
   Success := TJSON.TryParse('0', Value);
   AssertTrue('TryParse should succeed for 0', Success);
+end;
+
+procedure TJSONTest.Test42_ExtractValue;
+var
+  Obj: IJSONObject;
+  Val: IJSONValue;
+begin
+  Obj := TJSON.Obj;
+  Obj.Add('keep', 'value');
+  Obj.Add('take', 'extracted');
+
+  // Extract existing value
+  Val := ExtractValue(Obj, 'take');
+  AssertNotNull('Extracted value should not be nil', Val);
+  AssertEquals('Extracted value should match', 'extracted', Val.AsString);
+  AssertFalse('Object should no longer contain the key after extract', Obj.Contains('take'));
+
+  // Extract missing returns nil
+  Val := ExtractValue(Obj, 'missing');
+  AssertNull('Extracting missing key should return nil', Val);
 end;
 
 initialization
